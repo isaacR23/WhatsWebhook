@@ -30,10 +30,10 @@ app.on('GET', ['/facebook','/instagram'], (c) => {
 
 app.post('/facebook', async (c) => {
   const body = await c.req.parseBody();
-  console.log('Facebook request body:');
+  console.log('Facebook request body:', body);
   
   // Your processing logic here
-  console.log(body);
+  // console.log(body);
   // Process the Instagram updates here
   received_updates.unshift(body);
   
