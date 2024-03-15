@@ -10,7 +10,7 @@ const app = new Hono()
 const token = process.env.TOKEN || 'token';
 const received_updates: any[] = [];
 
-app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
+// app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
 
 app.get('/', (c) => {
   console.log(c.req)
