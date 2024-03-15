@@ -1,22 +1,11 @@
+
 import { Hono } from 'hono'
 var xhub = require('express-x-hub');
 import { jwt } from 'hono/jwt'
 import { prettyJSON } from 'hono/pretty-json'
 // var bodyParser = require('body-parser');
 const crypto = require('crypto');
-import { sentry } from '@hono/sentry'
 const app = new Hono()
-
-app.use('*', sentry())
-app.use(prettyJSON())
-
-
-// app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
-
-// app.use(jwt({ algorithm: 'sha1', secret: process.env.APP_SECRET }))
-
-
-
 const token = process.env.TOKEN || 'token';
 const received_updates: any[] = [];
 
@@ -85,21 +74,23 @@ app.post('/facebook', async (c) => {
   return c.text('OK', 200);
 });
 
+//////////////////////////////////////////////
+// Health check for docker
+app.get('/healthcheck', (c) => {
+  return c.text('OK', 200)
+})
 
 //////////////////////////////////////////////
 
 
-app.post('/instagram',  async (c) => {
-  const body = await c.req.parseBody();
-  console.log('Instagram request body:');
-  console.log(body);
-  // Process the Instagram updates here
-  received_updates.unshift(body);
-  return c.status(200);
-});
+// app.post('/instagram',  async (c) => {
+//   const body = await c.req.parseBody();
+//   console.log('Instagram request body:');
+//   console.log(body);
+//   // Process the Instagram updates here
+//   received_updates.unshift(body);
+//   return c.status(200);
+// });
 
 // http://localhost:3000 whatch on your browser the results
-export default { 
-  port: 3000, 
-  fetch: app.fetch, 
-} 
+export default app

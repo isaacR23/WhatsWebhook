@@ -19,7 +19,7 @@ COPY . .
 
 EXPOSE ${PORT:-3000}
  
-CMD ["bun", "run",  "src/index.ts"]
+CMD ["bun", "src/index.ts"]
 
 
 
