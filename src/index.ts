@@ -4,12 +4,13 @@ var xhub = require('express-x-hub');
 import { jwt } from 'hono/jwt'
 import { prettyJSON } from 'hono/pretty-json'
 // var bodyParser = require('body-parser');
+var xhub = require('express-x-hub');
 const crypto = require('crypto');
 const app = new Hono()
 const token = process.env.TOKEN || 'token';
 const received_updates: any[] = [];
 
-
+app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
 
 app.get('/', (c) => {
   console.log(c.req)
@@ -27,70 +28,26 @@ app.on('GET', ['/facebook','/instagram'], (c) => {
   }
 })
 
-// app.post('/facebook', async (c) => {
-//   const body = c.req.json();
-//   console.log('Facebook request body:', body)
-//   if (!c.req.isXHubValid()){
-//     console.log('Warning - request header X-Hub-Signature not present or invalid');
-
-//     return c.text('Unauthorized', 401);
-//   }
-
-//   console.log('request header X-Hub-Signature validated');
-//   // Process the Facebook updates here
-//   received_updates.unshift(body);
-//   return c.status(200)
-
-// })
-
-//////////////////////////////////////////////
-
-const verifyXHubSignature = app.use('/facebook', async (c, next) => {
-  const signature = c.req.header('X-Hub-Signature');
-  const body = await c.req.parseBody();
-    const expectedSignature = `sha1=` +
-    crypto
-      .createHmac('sha1', process.env.APP_SECRET)
-      .update(body, 'utf-8')
-      .digest('hex');
-
-  if (signature !== expectedSignature) {
-    return c.text('Unauthorized', 401);
-  }
-
-  // Add the parsed body to the context for later routes to access
-  // c.req.param('body') = body
-
-  await next();
-});
-
-
 app.post('/facebook', async (c) => {
-  const body = c.req.query('body'); // Now you can access the parsed body directly
-  console.log('Facebook request body:', body);
+  const body = await c.req.parseBody();
+  console.log('Facebook request body:');
   
   // Your processing logic here
-
+  console.log(body);
+  // Process the Instagram updates here
+  received_updates.unshift(body);
+  
   return c.text('OK', 200);
 });
 
-//////////////////////////////////////////////
-// Health check for docker
-app.get('/healthcheck', (c) => {
-  return c.text('OK', 200)
-})
-
-//////////////////////////////////////////////
-
-
-// app.post('/instagram',  async (c) => {
-//   const body = await c.req.parseBody();
-//   console.log('Instagram request body:');
-//   console.log(body);
-//   // Process the Instagram updates here
-//   received_updates.unshift(body);
-//   return c.status(200);
-// });
+app.post('/instagram',  async (c) => {
+  const body = await c.req.parseBody();
+  console.log('Instagram request body:');
+  console.log(body);
+  // Process the Instagram updates here
+  received_updates.unshift(body);
+  return c.status(200);
+});
 
 // http://localhost:3000 whatch on your browser the results
 export default app
