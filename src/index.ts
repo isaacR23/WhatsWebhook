@@ -4,9 +4,12 @@ import { jwt } from 'hono/jwt'
 import { prettyJSON } from 'hono/pretty-json'
 // var bodyParser = require('body-parser');
 const crypto = require('crypto');
+import { sentry } from '@hono/sentry'
 const app = new Hono()
 
+app.use('*', sentry())
 app.use(prettyJSON())
+
 
 // app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
 
