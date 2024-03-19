@@ -1,2 +1,5 @@
 node_modules
 .env
+src/index_j.js
+src/backup.ts
+src/Ably.ts
