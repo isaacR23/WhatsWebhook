@@ -11,7 +11,7 @@ const basketballChannel = client.channels.get(BASKETBALL_CHANNEL_NAME);
 
 
 // Function to subscribe to the basketball channel
-function subscribeToBasketball() {
+// function subscribeToBasketball() {
   // Subscribe to the basketball channel
   basketballChannel.subscribe((message : object) => {
     // Handle incoming messages from the basketball channel
@@ -21,16 +21,16 @@ function subscribeToBasketball() {
     // Perform any additional logic with the received message data
     // ...
   });
-}
+// }
 
 // Function to unsubscribe from the basketball channel
-function unsubscribeFromBasketball() {
-  // Unsubscribe from the basketball channel
-  basketballChannel.unsubscribe();
-}
+// function unsubscribeFromBasketball() {
+//   // Unsubscribe from the basketball channel
+//   basketballChannel.unsubscribe();
+// }
 
 // Call the subscribeToBasketball function to start receiving messages
-subscribeToBasketball();
+// subscribeToBasketball();
 
 // Call the unsubscribeFromBasketball function to stop receiving messages
 // unsubscribeFromBasketball();
